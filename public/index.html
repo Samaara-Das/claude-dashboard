@@ -4,28 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Samaara's Claude Code Stats 🦊</title>
-  <meta name="description" content="Real-time stats from my Claude Code coding sessions. Built by Bo, my AI assistant.">
-  <meta property="og:title" content="Samaara's Claude Code Stats">
-  <meta property="og:description" content="See how I code with AI - sessions, messages, projects, and more!">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-tertiary: #1a1a24;
-      --bg-card: linear-gradient(145deg, #14141e 0%, #0f0f17 100%);
-      --border: #2a2a3a;
-      --text-primary: #f0f0f5;
-      --text-secondary: #8888a0;
-      --accent: #6366f1;
-      --accent-glow: rgba(99, 102, 241, 0.3);
-      --green: #10b981;
-      --purple: #a855f7;
-      --orange: #f59e0b;
-      --pink: #ec4899;
-      --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --bg-card: #1c2128;
+      --border: #30363d;
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent: #58a6ff;
+      --accent-secondary: #f778ba;
+      --accent-green: #3fb950;
+      --accent-purple: #a371f7;
+      --accent-orange: #f0883e;
+      --accent-yellow: #d29922;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     }
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,25 +36,11 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    .bg-glow {
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+      line-height: 1.6;
     }
     
     .container {
-      position: relative;
-      z-index: 1;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 2rem;
     }
@@ -61,35 +48,29 @@
     header {
       text-align: center;
       margin-bottom: 3rem;
-      padding: 2rem 0;
+      padding: 2rem;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      border: 1px solid var(--border);
     }
     
     .avatar {
-      width: 80px;
-      height: 80px;
-      background: var(--gradient);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 0 40px var(--accent-glow);
+      font-size: 4rem;
+      margin-bottom: 1rem;
     }
     
     h1 {
       font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
-      background: var(--gradient);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-bottom: 0.5rem;
     }
     
     .subtitle {
       color: var(--text-secondary);
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     .subtitle a {
@@ -98,7 +79,7 @@
     }
     
     .date-range {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       padding: 0.75rem 1.5rem;
       background: var(--bg-tertiary);
       border: 1px solid var(--border);
@@ -112,11 +93,12 @@
       color: var(--accent);
     }
     
+    /* Stats Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
     
     .stat-card {
@@ -126,12 +108,12 @@
       padding: 1.5rem;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
     
     .stat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     }
     
     .stat-card::before {
@@ -140,121 +122,94 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: var(--gradient);
+      height: 4px;
     }
     
-    .stat-card.green::before { background: var(--green); }
-    .stat-card.purple::before { background: var(--purple); }
-    .stat-card.orange::before { background: var(--orange); }
-    .stat-card.pink::before { background: var(--pink); }
+    .stat-card:nth-child(1)::before { background: var(--gradient-1); }
+    .stat-card:nth-child(2)::before { background: var(--gradient-2); }
+    .stat-card:nth-child(3)::before { background: var(--gradient-3); }
+    .stat-card:nth-child(4)::before { background: var(--gradient-4); }
+    .stat-card:nth-child(5)::before { background: var(--gradient-5); }
+    .stat-card:nth-child(6)::before { background: var(--gradient-1); }
+    .stat-card:nth-child(7)::before { background: var(--gradient-2); }
+    .stat-card:nth-child(8)::before { background: var(--gradient-3); }
     
     .stat-icon {
       font-size: 1.5rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
     
     .stat-value {
-      font-size: 2.25rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 0.25rem;
-      letter-spacing: -1px;
+      color: var(--text-primary);
     }
     
     .stat-label {
-      color: var(--text-secondary);
       font-size: 0.85rem;
+      color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
     
+    /* Section styling */
+    .section {
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* Charts */
     .charts-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
     
-    @media (max-width: 800px) {
-      .charts-grid { grid-template-columns: 1fr; }
-    }
-    
-    .card {
+    .chart-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 1.5rem;
     }
     
-    .card h2 {
+    .chart-title {
       font-size: 1rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-    }
-    
-    .projects-list {
-      display: grid;
-      gap: 0.75rem;
-    }
-    
-    .project-item {
-      background: var(--bg-tertiary);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.2s;
-    }
-    
-    .project-item:hover {
-      background: #22222e;
-    }
-    
-    .project-name {
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
     }
     
-    .project-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--gradient);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-    
-    .project-stats {
-      display: flex;
+    /* Lists */
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
     }
     
-    .project-stat {
-      text-align: right;
+    .list-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
     }
     
-    .project-stat-value {
+    .list-title {
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--accent);
-      font-size: 1.1rem;
-    }
-    
-    .project-stat-label {
-      font-size: 0.7rem;
+      margin-bottom: 1rem;
       color: var(--text-secondary);
-      text-transform: uppercase;
     }
     
-    .model-item {
+    .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -262,411 +217,423 @@
       border-bottom: 1px solid var(--border);
     }
     
-    .model-item:last-child { border-bottom: none; }
+    .list-item:last-child {
+      border-bottom: none;
+    }
     
-    .model-name {
+    .list-item-name {
+      font-size: 0.9rem;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
     
-    .model-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    
-    .model-dot.opus { background: var(--purple); }
-    .model-dot.sonnet { background: var(--accent); }
-    
-    .cost-badge {
-      background: linear-gradient(135deg, var(--green), #059669);
-      color: white;
-      padding: 0.35rem 0.75rem;
-      border-radius: 20px;
+    .list-item-value {
       font-size: 0.85rem;
+      color: var(--accent);
       font-weight: 600;
     }
     
-    .insight-box {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
-      border: 1px solid var(--accent);
+    .branch-tag {
+      font-size: 0.7rem;
+      background: var(--bg-tertiary);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: var(--accent-purple);
+      margin-left: 0.25rem;
+    }
+    
+    /* Insights */
+    .insights {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 1.5rem;
       margin-bottom: 2rem;
-      text-align: center;
     }
     
-    .insight-box h3 {
+    .insights-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .insight-tag {
+      background: var(--bg-tertiary);
+      padding: 0.75rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+    }
+    
+    /* Token breakdown */
+    .token-breakdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .token-stat {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+    }
+    
+    .token-stat-value {
+      font-size: 1.25rem;
+      font-weight: 600;
       color: var(--accent);
-      margin-bottom: 0.75rem;
-      font-size: 1.1rem;
     }
     
-    .insight-box p {
-      color: var(--text-secondary);
-      line-height: 1.6;
+    .token-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
     }
     
-    canvas {
-      max-height: 220px;
-    }
-    
-    footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--text-secondary);
-    }
-    
-    footer .credit {
+    /* Model badges */
+    .model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      margin-right: 0.5rem;
       margin-bottom: 0.5rem;
     }
     
-    footer .credit a {
+    .model-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .model-dot.opus { background: var(--accent-purple); }
+    .model-dot.sonnet { background: var(--accent); }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    
+    footer a {
       color: var(--accent);
       text-decoration: none;
     }
     
-    footer .timestamp {
-      font-size: 0.8rem;
+    #timestamp {
+      margin-top: 0.5rem;
       opacity: 0.7;
     }
     
-    .loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem;
-      color: var(--text-secondary);
-    }
-    
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 0.75rem;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .fun-fact {
+    /* Progress bar for tools */
+    .progress-bar-bg {
       background: var(--bg-tertiary);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-top: 1rem;
-      text-align: center;
+      height: 6px;
+      border-radius: 3px;
+      flex: 1;
+      margin-left: 1rem;
     }
     
-    .fun-fact-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--orange);
+    .progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--gradient-3);
     }
     
-    .fun-fact-label {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.75rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      .token-breakdown { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
-  <div class="bg-glow"></div>
-  
   <div class="container">
     <header>
       <div class="avatar">👩‍💻</div>
-      <h1>Samaara's Claude Stats</h1>
+      <h1>Samaara's Claude Code Stats</h1>
       <p class="subtitle">Coding with AI • Built by <a href="#">Bo 🦊</a></p>
       <div class="date-range" id="date-range"></div>
     </header>
     
-    <div class="stats-grid" id="stats-grid">
-      <div class="loading"><div class="spinner"></div> Loading...</div>
+    <!-- Stats Cards -->
+    <div class="stats-grid" id="stats-grid"></div>
+    
+    <!-- AI Insights -->
+    <div class="insights">
+      <h2 class="section-title">✨ AI Insights</h2>
+      <div class="insights-grid" id="insights"></div>
     </div>
     
-    <div class="insight-box" id="insight-box" style="display: none;">
-      <h3>✨ AI Insights</h3>
-      <p id="insight-text"></p>
-    </div>
-    
+    <!-- Charts -->
     <div class="charts-grid">
-      <div class="card">
-        <h2>📊 Daily Activity</h2>
+      <div class="chart-card">
+        <h3 class="chart-title">📈 Daily Activity</h3>
         <canvas id="activityChart"></canvas>
-        <div class="fun-fact" id="peak-day"></div>
       </div>
-      <div class="card">
-        <h2>🕐 Coding Hours</h2>
-        <canvas id="hoursChart"></canvas>
+      <div class="chart-card">
+        <h3 class="chart-title">⏰ Coding Hours</h3>
+        <canvas id="hourlyChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">🤖 Model Usage</h3>
+        <canvas id="modelChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">📅 Weekly Pattern</h3>
+        <canvas id="weekdayChart"></canvas>
       </div>
     </div>
     
-    <div class="charts-grid">
-      <div class="card">
-        <h2>📁 Projects</h2>
-        <div class="projects-list" id="projects-list">
-          <div class="loading"><div class="spinner"></div> Loading...</div>
-        </div>
+    <!-- Token Breakdown -->
+    <div class="chart-card section">
+      <h3 class="chart-title">🔢 Token Consumption</h3>
+      <div class="token-breakdown" id="token-breakdown"></div>
+    </div>
+    
+    <!-- Lists -->
+    <div class="list-grid">
+      <div class="list-card">
+        <h3 class="list-title">📁 Projects</h3>
+        <div id="projects-list"></div>
       </div>
-      <div class="card">
-        <h2>🤖 Model Usage</h2>
-        <canvas id="modelChart"></canvas>
-        <div id="model-breakdown"></div>
+      <div class="list-card">
+        <h3 class="list-title">🔧 Top Tools</h3>
+        <div id="tools-list"></div>
+      </div>
+      <div class="list-card">
+        <h3 class="list-title">🌿 Git Branches</h3>
+        <div id="branches-list"></div>
       </div>
     </div>
     
     <footer>
-      <p class="credit">Built with 💜 by <strong>Bo 🦊</strong> — Samaara's AI assistant</p>
-      <p class="credit">Powered by <a href="https://claude.ai" target="_blank">Claude Code</a> + <a href="https://openclaw.ai" target="_blank">OpenClaw</a></p>
-      <p class="timestamp" id="timestamp"></p>
+      <p>Built with 💜 by Bo 🦊 using OpenClaw + Claude</p>
+      <p id="timestamp"></p>
     </footer>
   </div>
   
   <script>
-    let activityChart, hoursChart, modelChart;
+    const chartColors = {
+      purple: 'rgba(163, 113, 247, 0.8)',
+      blue: 'rgba(88, 166, 255, 0.8)',
+      pink: 'rgba(247, 120, 186, 0.8)',
+      green: 'rgba(63, 185, 80, 0.8)',
+      orange: 'rgba(240, 136, 62, 0.8)',
+      yellow: 'rgba(210, 153, 34, 0.8)'
+    };
     
-    async function loadData() {
+    Chart.defaults.color = '#8b949e';
+    Chart.defaults.borderColor = 'rgba(48, 54, 61, 0.5)';
+    
+    async function loadDashboard() {
       try {
-        const res = await fetch('/data.json');
+        const res = await fetch('data.json');
         const data = await res.json();
         
-        renderStats(data);
-        renderProjects(data.projects);
-        renderModels(data.modelUsage);
-        createActivityChart(data.dailyActivity);
-        createHoursChart(data.hourlyDistribution);
-        generateInsight(data);
+        // Stats cards
+        const statsGrid = document.getElementById('stats-grid');
+        const stats = [
+          { icon: '💬', value: data.summary.totalMessages?.toLocaleString() || '0', label: 'Messages' },
+          { icon: '🔧', value: data.summary.totalToolCalls?.toLocaleString() || '0', label: 'Tool Calls' },
+          { icon: '📊', value: data.summary.totalSessions || '0', label: 'Sessions' },
+          { icon: '📅', value: data.summary.daysActive || '0', label: 'Active Days' },
+          { icon: '📝', value: data.summary.averageSessionLength || '0', label: 'Avg Messages/Session' },
+          { icon: '💰', value: '$' + (data.summary.estimatedCostUSD?.toFixed(2) || '0'), label: 'Est. Cost' },
+          { icon: '📁', value: data.projects?.length || '0', label: 'Projects' },
+          { icon: '🌿', value: Object.keys(data.gitBranches || {}).length, label: 'Git Branches' }
+        ];
         
+        statsGrid.innerHTML = stats.map(s => `
+          <div class="stat-card">
+            <div class="stat-icon">${s.icon}</div>
+            <div class="stat-value">${s.value}</div>
+            <div class="stat-label">${s.label}</div>
+          </div>
+        `).join('');
+        
+        // Date range
+        if (data.dateRange?.from && data.dateRange?.to) {
+          const formatDate = (d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          document.getElementById('date-range').innerHTML = 
+            `📅 <strong>${formatDate(data.dateRange.from)}</strong> → <strong>${formatDate(data.dateRange.to)}</strong> (${data.dateRange.totalDays} active days)`;
+        }
+        
+        // Timestamp
         document.getElementById('timestamp').textContent = 
           `Last updated: ${new Date(data.generatedAt).toLocaleDateString('en-US', { 
             month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
           })}`;
         
-        // Render date range
-        if (data.dateRange && data.dateRange.from && data.dateRange.to) {
-          const fromDate = new Date(data.dateRange.from);
-          const toDate = new Date(data.dateRange.to);
-          const formatDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          document.getElementById('date-range').innerHTML = 
-            `📅 <strong>${formatDate(fromDate)}</strong> → <strong>${formatDate(toDate)}</strong> (${data.dateRange.totalDays} active days)`;
+        // Insights
+        if (data.insights?.length) {
+          document.getElementById('insights').innerHTML = 
+            data.insights.map(i => `<div class="insight-tag">${i}</div>`).join('');
         }
         
-      } catch (e) {
-        console.error('Failed to load data:', e);
-        document.getElementById('stats-grid').innerHTML = 
-          '<div class="loading">Failed to load data. Try refreshing!</div>';
-      }
-    }
-    
-    function renderStats(data) {
-      const s = data.summary;
-      const f = data.funStats;
-      
-      document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card">
-          <div class="stat-icon">💬</div>
-          <div class="stat-value">${s.totalSessions}</div>
-          <div class="stat-label">Sessions</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-icon">📝</div>
-          <div class="stat-value">${formatNumber(s.totalMessages)}</div>
-          <div class="stat-label">Messages</div>
-        </div>
-        <div class="stat-card purple">
-          <div class="stat-icon">📁</div>
-          <div class="stat-value">${s.projectCount}</div>
-          <div class="stat-label">Projects</div>
-        </div>
-        <div class="stat-card orange">
-          <div class="stat-icon">📅</div>
-          <div class="stat-value">${s.daysSinceFirstSession}</div>
-          <div class="stat-label">Days with Claude</div>
-        </div>
-        <div class="stat-card pink">
-          <div class="stat-icon">⏱️</div>
-          <div class="stat-value">${s.longestSessionHours}h</div>
-          <div class="stat-label">Longest Session</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🔧</div>
-          <div class="stat-value">${formatNumber(f.totalToolCalls)}</div>
-          <div class="stat-label">Tool Calls</div>
-        </div>
-      `;
-    }
-    
-    function renderProjects(projects) {
-      const icons = ['🚀', '💡', '🎯', '⚡', '🔮', '🎨', '🧪', '📱'];
-      
-      document.getElementById('projects-list').innerHTML = projects.slice(0, 5).map((p, i) => `
-        <div class="project-item">
-          <div class="project-name">
-            <div class="project-icon">${icons[i % icons.length]}</div>
-            <span>${p.name}</span>
+        // Token breakdown
+        const tokens = data.summary.totalTokens || {};
+        document.getElementById('token-breakdown').innerHTML = `
+          <div class="token-stat">
+            <div class="token-stat-value">${(tokens.input / 1000000).toFixed(1)}M</div>
+            <div class="token-stat-label">Input Tokens</div>
           </div>
-          <div class="project-stats">
-            <div class="project-stat">
-              <div class="project-stat-value">${p.sessionCount}</div>
-              <div class="project-stat-label">Sessions</div>
-            </div>
-            <div class="project-stat">
-              <div class="project-stat-value">${formatNumber(p.totalMessages)}</div>
-              <div class="project-stat-label">Messages</div>
-            </div>
+          <div class="token-stat">
+            <div class="token-stat-value">${(tokens.output / 1000000).toFixed(1)}M</div>
+            <div class="token-stat-label">Output Tokens</div>
           </div>
-        </div>
-      `).join('');
-    }
-    
-    function renderModels(modelUsage) {
-      document.getElementById('model-breakdown').innerHTML = Object.entries(modelUsage).map(([name, usage]) => `
-        <div class="model-item">
-          <div class="model-name">
-            <div class="model-dot ${name.toLowerCase().includes('opus') ? 'opus' : 'sonnet'}"></div>
-            <span>${name}</span>
+          <div class="token-stat">
+            <div class="token-stat-value">${(tokens.cacheRead / 1000000).toFixed(0)}M</div>
+            <div class="token-stat-label">Cache Read</div>
           </div>
-          <span class="cost-badge">$${usage.estimatedCost}</span>
-        </div>
-      `).join('');
-      
-      createModelChart(modelUsage);
-    }
-    
-    function createActivityChart(dailyData) {
-      const ctx = document.getElementById('activityChart').getContext('2d');
-      if (activityChart) activityChart.destroy();
-      
-      const labels = dailyData.slice(-14).map(d => {
-        const date = new Date(d.date);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      });
-      const messages = dailyData.slice(-14).map(d => d.messageCount);
-      const tools = dailyData.slice(-14).map(d => d.toolCallCount);
-      
-      activityChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Messages',
-              data: messages,
-              backgroundColor: 'rgba(99, 102, 241, 0.8)',
-              borderRadius: 6
-            },
-            {
-              label: 'Tools',
-              data: tools,
-              backgroundColor: 'rgba(168, 85, 247, 0.8)',
-              borderRadius: 6
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { labels: { color: '#8888a0', font: { family: 'Inter' } } } },
-          scales: {
-            x: { grid: { color: '#2a2a3a' }, ticks: { color: '#8888a0' } },
-            y: { grid: { color: '#2a2a3a' }, ticks: { color: '#8888a0' } }
-          }
-        }
-      });
-      
-      // Peak day
-      const peak = dailyData.reduce((max, d) => d.messageCount > (max?.messageCount || 0) ? d : max, null);
-      if (peak) {
-        const peakDate = new Date(peak.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        document.getElementById('peak-day').innerHTML = `
-          <div class="fun-fact-value">${peak.messageCount} messages</div>
-          <div class="fun-fact-label">Peak day: ${peakDate} 🔥</div>
+          <div class="token-stat">
+            <div class="token-stat-value">${(tokens.cacheWrite / 1000000).toFixed(0)}M</div>
+            <div class="token-stat-label">Cache Write</div>
+          </div>
         `;
+        
+        // Projects list
+        const projects = data.projects || [];
+        document.getElementById('projects-list').innerHTML = projects.slice(0, 8).map(p => `
+          <div class="list-item">
+            <div class="list-item-name">
+              📂 ${p.name.substring(0, 30)}${p.name.length > 30 ? '...' : ''}
+              ${p.branches?.length ? `<span class="branch-tag">${p.branches[0]}</span>` : ''}
+            </div>
+            <div class="list-item-value">${p.sessions} sessions</div>
+          </div>
+        `).join('') || '<div class="list-item"><span class="list-item-name">No projects found</span></div>';
+        
+        // Tools list
+        const tools = Object.entries(data.toolUsage || {});
+        const maxToolCount = Math.max(...tools.map(t => t[1]));
+        document.getElementById('tools-list').innerHTML = tools.slice(0, 8).map(([name, count]) => `
+          <div class="list-item">
+            <div class="list-item-name">🔧 ${name}</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar" style="width: ${(count / maxToolCount * 100)}%"></div>
+            </div>
+            <div class="list-item-value" style="min-width: 60px; text-align: right;">${count.toLocaleString()}</div>
+          </div>
+        `).join('') || '<div class="list-item"><span class="list-item-name">No tool data</span></div>';
+        
+        // Branches list
+        const branches = Object.entries(data.gitBranches || {});
+        document.getElementById('branches-list').innerHTML = branches.slice(0, 8).map(([name, count]) => `
+          <div class="list-item">
+            <div class="list-item-name">🌿 ${name.substring(0, 35)}${name.length > 35 ? '...' : ''}</div>
+            <div class="list-item-value">${count}</div>
+          </div>
+        `).join('') || '<div class="list-item"><span class="list-item-name">No branch data</span></div>';
+        
+        // Activity chart
+        const dailyData = data.dailyActivity || [];
+        new Chart(document.getElementById('activityChart'), {
+          type: 'bar',
+          data: {
+            labels: dailyData.map(d => d.date),
+            datasets: [{
+              label: 'Messages',
+              data: dailyData.map(d => d.messages),
+              backgroundColor: chartColors.blue,
+              borderRadius: 4
+            }, {
+              label: 'Tool Calls',
+              data: dailyData.map(d => d.toolCalls),
+              backgroundColor: chartColors.purple,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } },
+            scales: {
+              x: { stacked: false },
+              y: { beginAtZero: true }
+            }
+          }
+        });
+        
+        // Hourly chart
+        const hourlyData = data.hourlyActivity || Array(24).fill(0);
+        new Chart(document.getElementById('hourlyChart'), {
+          type: 'polarArea',
+          data: {
+            labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+            datasets: [{
+              data: hourlyData,
+              backgroundColor: hourlyData.map((_, i) => {
+                const colors = [chartColors.purple, chartColors.blue, chartColors.pink, chartColors.green, chartColors.orange];
+                return colors[i % colors.length];
+              })
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } }
+          }
+        });
+        
+        // Model usage chart
+        const modelData = data.modelUsage || {};
+        new Chart(document.getElementById('modelChart'), {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(modelData),
+            datasets: [{
+              data: Object.values(modelData).map(m => m.outputTokens),
+              backgroundColor: [chartColors.purple, chartColors.blue, chartColors.pink],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+          }
+        });
+        
+        // Weekday chart
+        const weekdayData = data.weekdayActivity || Array(7).fill(0);
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        new Chart(document.getElementById('weekdayChart'), {
+          type: 'bar',
+          data: {
+            labels: weekdays,
+            datasets: [{
+              label: 'Activity',
+              data: weekdayData,
+              backgroundColor: weekdays.map((_, i) => 
+                [chartColors.pink, chartColors.blue, chartColors.green, chartColors.purple, chartColors.orange, chartColors.yellow, chartColors.pink][i]
+              ),
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+        
+      } catch (error) {
+        console.error('Failed to load dashboard:', error);
+        document.body.innerHTML = '<div style="text-align:center;padding:4rem;"><h1>😿 Could not load data</h1><p>Make sure data.json exists</p></div>';
       }
     }
     
-    function createHoursChart(hourCounts) {
-      const ctx = document.getElementById('hoursChart').getContext('2d');
-      if (hoursChart) hoursChart.destroy();
-      
-      const hours = Array.from({length: 24}, (_, i) => i);
-      const counts = hours.map(h => hourCounts[h] || 0);
-      const maxCount = Math.max(...counts, 1);
-      
-      hoursChart = new Chart(ctx, {
-        type: 'polarArea',
-        data: {
-          labels: hours.map(h => `${h}:00`),
-          datasets: [{
-            data: counts,
-            backgroundColor: hours.map((h, i) => {
-              const intensity = counts[i] / maxCount;
-              return `hsla(${250 - intensity * 30}, 80%, ${50 + intensity * 20}%, ${0.4 + intensity * 0.5})`;
-            })
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { r: { grid: { color: '#2a2a3a' }, ticks: { display: false } } }
-        }
-      });
-    }
-    
-    function createModelChart(modelUsage) {
-      const ctx = document.getElementById('modelChart').getContext('2d');
-      if (modelChart) modelChart.destroy();
-      
-      const labels = Object.keys(modelUsage);
-      const data = Object.values(modelUsage).map(m => m.outputTokens);
-      
-      modelChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels,
-          datasets: [{
-            data,
-            backgroundColor: ['rgba(99, 102, 241, 0.9)', 'rgba(168, 85, 247, 0.9)'],
-            borderWidth: 0,
-            spacing: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '65%',
-          plugins: { legend: { position: 'bottom', labels: { color: '#8888a0', padding: 15 } } }
-        }
-      });
-    }
-    
-    function generateInsight(data) {
-      const s = data.summary;
-      const f = data.funStats;
-      
-      const insights = [
-        `With ${f.avgMessagesPerSession} messages per session on average, you're having deep conversations with Claude!`,
-        `${s.daysSinceFirstSession} days of coding with AI — that's dedication! 🚀`,
-        `${f.totalToolCalls.toLocaleString()} tool calls means Claude is really getting things done for you.`,
-        `Your longest session was ${s.longestSessionHours} hours. That's some serious flow state! ⚡`
-      ];
-      
-      document.getElementById('insight-text').textContent = insights[Math.floor(Math.random() * insights.length)];
-      document.getElementById('insight-box').style.display = 'block';
-    }
-    
-    function formatNumber(n) {
-      if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-      return n.toString();
-    }
-    
-    loadData();
+    loadDashboard();
+    setInterval(loadDashboard, 5 * 60 * 1000); // Refresh every 5 min
   </script>
 </body>
 </html>

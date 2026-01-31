@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-01-31T08:05:25.963Z",
+  "generatedAt": "2026-01-31T08:11:02.497Z",
   "dateRange": {
     "from": "2025-11-22",
     "to": "2026-01-02",
@@ -8,147 +8,336 @@
   "summary": {
     "totalSessions": 28,
     "totalMessages": 4731,
-    "projectCount": 5,
-    "daysSinceFirstSession": 69,
-    "longestSessionHours": 116
+    "totalToolCalls": 1438,
+    "totalTokens": {
+      "input": 306874,
+      "output": 660266,
+      "cacheRead": 193088201,
+      "cacheWrite": 29189761
+    },
+    "estimatedCostUSD": 790.3682518500001,
+    "daysActive": 11,
+    "longestSession": {
+      "messages": 786,
+      "duration": 419427809,
+      "date": "2025-11-23T10:13:33.472Z"
+    },
+    "averageSessionLength": 169,
+    "firstActivity": "2025-11-22T16:39:14.029Z",
+    "lastActivity": "2026-01-05T12:45:41.206Z"
+  },
+  "modelUsage": {
+    "Claude Sonnet 4.5": {
+      "inputTokens": 33179,
+      "outputTokens": 72154,
+      "cacheRead": 32289292,
+      "cacheWrite": 3814706,
+      "sessions": 677
+    },
+    "Claude Opus 4.5": {
+      "inputTokens": 273695,
+      "outputTokens": 588112,
+      "cacheRead": 160798909,
+      "cacheWrite": 25375055,
+      "sessions": 3044
+    },
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "sessions": 255
+    },
+    "<synthetic>": {
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "sessions": 19
+    }
+  },
+  "toolUsage": {
+    "Read": 657,
+    "Edit": 612,
+    "Bash": 302,
+    "TodoWrite": 152,
+    "Grep": 108,
+    "Glob": 66,
+    "Task": 34,
+    "AgentOutputTool": 26,
+    "Write": 16,
+    "mcp__task-master-ai__get_tasks": 8,
+    "WebFetch": 8,
+    "WebSearch": 7,
+    "mcp__task-master-ai__update_subtask": 6,
+    "mcp__brave-search__brave_web_search": 5,
+    "mcp__task-master-ai__get_task": 5,
+    "mcp__task-master-ai__set_task_status": 4,
+    "Skill": 2,
+    "mcp__task-master-ai__expand_task": 1,
+    "TaskOutput": 1,
+    "AskUserQuestion": 1
   },
   "dailyActivity": [
     {
       "date": "2025-11-22",
-      "messageCount": 404,
-      "sessionCount": 1,
-      "toolCallCount": 141
+      "messages": 404,
+      "sessions": 1,
+      "toolCalls": 141
     },
     {
       "date": "2025-11-23",
-      "messageCount": 786,
-      "sessionCount": 1,
-      "toolCallCount": 274
+      "messages": 786,
+      "sessions": 1,
+      "toolCalls": 274
     },
     {
       "date": "2025-12-05",
-      "messageCount": 154,
-      "sessionCount": 3,
-      "toolCallCount": 46
+      "messages": 154,
+      "sessions": 3,
+      "toolCalls": 46
     },
     {
       "date": "2025-12-09",
-      "messageCount": 943,
-      "sessionCount": 8,
-      "toolCallCount": 318
+      "messages": 943,
+      "sessions": 8,
+      "toolCalls": 318
     },
     {
       "date": "2025-12-14",
-      "messageCount": 121,
-      "sessionCount": 1,
-      "toolCallCount": 46
+      "messages": 121,
+      "sessions": 1,
+      "toolCalls": 46
     },
     {
       "date": "2025-12-26",
-      "messageCount": 524,
-      "sessionCount": 2,
-      "toolCallCount": 166
+      "messages": 524,
+      "sessions": 2,
+      "toolCalls": 166
     },
     {
       "date": "2025-12-28",
-      "messageCount": 483,
-      "sessionCount": 2,
-      "toolCallCount": 114
+      "messages": 483,
+      "sessions": 2,
+      "toolCalls": 114
     },
     {
       "date": "2025-12-29",
-      "messageCount": 381,
-      "sessionCount": 3,
-      "toolCallCount": 95
+      "messages": 381,
+      "sessions": 3,
+      "toolCalls": 95
     },
     {
       "date": "2025-12-30",
-      "messageCount": 257,
-      "sessionCount": 2,
-      "toolCallCount": 64
+      "messages": 257,
+      "sessions": 2,
+      "toolCalls": 64
     },
     {
       "date": "2025-12-31",
-      "messageCount": 305,
-      "sessionCount": 3,
-      "toolCallCount": 74
+      "messages": 305,
+      "sessions": 3,
+      "toolCalls": 74
     },
     {
       "date": "2026-01-02",
-      "messageCount": 373,
-      "sessionCount": 2,
-      "toolCallCount": 100
+      "messages": 373,
+      "sessions": 2,
+      "toolCalls": 100
     }
   ],
-  "hourlyDistribution": {
-    "11": 4,
-    "13": 1,
-    "14": 3,
-    "15": 2,
-    "16": 2,
-    "17": 4,
-    "18": 1,
-    "19": 2,
-    "20": 2,
-    "21": 2,
-    "22": 4,
-    "23": 1
-  },
-  "modelUsage": {
-    "Claude Sonnet": {
-      "inputTokens": 33179,
-      "outputTokens": 72154,
-      "totalTokens": 105333,
-      "estimatedCost": "10.87"
-    },
-    "Claude Opus": {
-      "inputTokens": 273695,
-      "outputTokens": 588112,
-      "totalTokens": 861807,
-      "estimatedCost": "289.41"
-    }
-  },
+  "hourlyActivity": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    21,
+    155,
+    517,
+    428,
+    229,
+    463,
+    794,
+    1623,
+    1125,
+    310,
+    440,
+    320,
+    373,
+    57
+  ],
+  "weekdayActivity": [
+    676,
+    908,
+    2833,
+    745,
+    0,
+    1211,
+    454
+  ],
   "projects": [
     {
-      "name": "Trading-System",
-      "sessionCount": 160,
-      "totalMessages": 5523,
-      "lastActivity": "2026-01-05"
+      "name": "Users dassa Work Coding AI Trading System",
+      "sessions": 160,
+      "messages": 5523,
+      "toolCalls": 1709,
+      "branches": [
+        "make-atas-v1-work",
+        "feat-task-5-trading-agent"
+      ],
+      "lastActivity": "2026-01-05T12:45:41.206Z"
     },
     {
-      "name": "app-lite",
-      "sessionCount": 23,
-      "totalMessages": 777,
-      "lastActivity": "2026-01-02"
+      "name": "Users dassa Work Coding FCMB rova cba cib ng app lite",
+      "sessions": 23,
+      "messages": 777,
+      "toolCalls": 231,
+      "branches": [
+        "CIB-bulk-card",
+        "staging",
+        "CIB-empty-error-screens",
+        "CIB-color-scheme",
+        "CIB-mobile-typography"
+      ],
+      "lastActivity": "2026-01-02T12:05:55.160Z"
     },
     {
-      "name": "Fruiting-Tree",
-      "sessionCount": 15,
-      "totalMessages": 35,
-      "lastActivity": "2025-12-12"
+      "name": "c  Users dassa OneDrive Desktop The Fruiting Tree",
+      "sessions": 15,
+      "messages": 35,
+      "toolCalls": 6,
+      "branches": [
+        "main"
+      ],
+      "lastActivity": "2025-12-12T05:58:31.541Z"
     },
     {
-      "name": "Tradingview-Everywhere",
-      "sessionCount": 4,
-      "totalMessages": 179,
-      "lastActivity": "2025-12-14"
+      "name": "Users dassa Work Coding Tradingview to Everywhere",
+      "sessions": 4,
+      "messages": 179,
+      "toolCalls": 71,
+      "branches": [
+        "point-capital"
+      ],
+      "lastActivity": "2025-12-14T16:01:41.856Z"
     },
     {
-      "name": "Stock-Buddy",
-      "sessionCount": 3,
-      "totalMessages": 18,
-      "lastActivity": "2025-12-09"
+      "name": "Users dassa Work Coding Stock Buddy",
+      "sessions": 3,
+      "messages": 18,
+      "toolCalls": 5,
+      "branches": [
+        "main"
+      ],
+      "lastActivity": "2025-12-09T06:29:39.252Z"
     }
   ],
-  "funStats": {
-    "avgMessagesPerSession": 169,
-    "avgMessagesPerDay": 430,
-    "peakDay": {
-      "date": "2025-12-09",
-      "messageCount": 943,
-      "sessionCount": 8,
-      "toolCallCount": 318
+  "gitBranches": {
+    "make-atas-v1-work": 79,
+    "feat-task-5-trading-agent": 55,
+    "main": 14,
+    "CIB-bulk-card": 7,
+    "staging": 7,
+    "point-capital": 4,
+    "CIB-color-scheme": 2,
+    "CIB-mobile-typography": 2,
+    "CIB-empty-error-screens": 1
+  },
+  "tokenTrends": [
+    {
+      "date": "2025-11-22",
+      "tokens": 70680,
+      "byModel": {
+        "claude-sonnet-4-5-20250929": 70680
+      }
     },
-    "totalToolCalls": 1438
-  }
+    {
+      "date": "2025-11-23",
+      "tokens": 84651,
+      "byModel": {
+        "claude-sonnet-4-5-20250929": 34653,
+        "claude-opus-4-5-20251101": 49998
+      }
+    },
+    {
+      "date": "2025-12-05",
+      "tokens": 11064,
+      "byModel": {
+        "claude-opus-4-5-20251101": 11064
+      }
+    },
+    {
+      "date": "2025-12-09",
+      "tokens": 318741,
+      "byModel": {
+        "claude-opus-4-5-20251101": 318741
+      }
+    },
+    {
+      "date": "2025-12-14",
+      "tokens": 11997,
+      "byModel": {
+        "claude-opus-4-5-20251101": 11997
+      }
+    },
+    {
+      "date": "2025-12-26",
+      "tokens": 91484,
+      "byModel": {
+        "claude-opus-4-5-20251101": 91484
+      }
+    },
+    {
+      "date": "2025-12-28",
+      "tokens": 95515,
+      "byModel": {
+        "claude-opus-4-5-20251101": 95515
+      }
+    },
+    {
+      "date": "2025-12-29",
+      "tokens": 39141,
+      "byModel": {
+        "claude-opus-4-5-20251101": 39141
+      }
+    },
+    {
+      "date": "2025-12-30",
+      "tokens": 46783,
+      "byModel": {
+        "claude-opus-4-5-20251101": 46783
+      }
+    },
+    {
+      "date": "2025-12-31",
+      "tokens": 60728,
+      "byModel": {
+        "claude-opus-4-5-20251101": 60728
+      }
+    },
+    {
+      "date": "2026-01-02",
+      "tokens": 136356,
+      "byModel": {
+        "claude-opus-4-5-20251101": 136356
+      }
+    }
+  ],
+  "sessions": [],
+  "insights": [
+    "📅 Most active day: Tuesday",
+    "⏰ Peak coding hour: 17:00-18:00",
+    "🏆 Top project: Users dassa Work Coding AI Trading System (160 sessions)",
+    "🔧 Most used tool: Read (657 calls)",
+    "🤖 Primary model: Claude Opus 4.5",
+    "✍️ ~495K words generated",
+    "💰 Estimated cost: $790.37",
+    "🔥 Active on 11 days"
+  ]
 }
