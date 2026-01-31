@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samaara's Claude Code Stats 🦊</title>
+  <meta name="description" content="Real-time stats from my Claude Code coding sessions. Built by Bo, my AI assistant.">
+  <meta property="og:title" content="Samaara's Claude Code Stats">
+  <meta property="og:description" content="See how I code with AI - sessions, messages, projects, and more!">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a24;
+      --bg-card: linear-gradient(145deg, #14141e 0%, #0f0f17 100%);
+      --border: #2a2a3a;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888a0;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --green: #10b981;
+      --purple: #a855f7;
+      --orange: #f59e0b;
+      --pink: #ec4899;
+      --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .bg-glow {
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+    
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+    
+    .subtitle a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient);
+    }
+    
+    .stat-card.green::before { background: var(--green); }
+    .stat-card.purple::before { background: var(--purple); }
+    .stat-card.orange::before { background: var(--orange); }
+    .stat-card.pink::before { background: var(--pink); }
+    
+    .stat-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .stat-value {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      letter-spacing: -1px;
+    }
+    
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 800px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    
+    .card h2 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .projects-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+    
+    .project-item {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    
+    .project-item:hover {
+      background: #22222e;
+    }
+    
+    .project-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .project-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    
+    .project-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .project-stat {
+      text-align: right;
+    }
+    
+    .project-stat-value {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+    
+    .project-stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    
+    .model-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .model-item:last-child { border-bottom: none; }
+    
+    .model-name {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .model-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .model-dot.opus { background: var(--purple); }
+    .model-dot.sonnet { background: var(--accent); }
+    
+    .cost-badge {
+      background: linear-gradient(135deg, var(--green), #059669);
+      color: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .insight-box {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .insight-box h3 {
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+    
+    .insight-box p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    canvas {
+      max-height: 220px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-secondary);
+    }
+    
+    footer .credit {
+      margin-bottom: 0.5rem;
+    }
+    
+    footer .credit a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    footer .timestamp {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.75rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .fun-fact {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    
+    .fun-fact-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--orange);
+    }
+    
+    .fun-fact-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  
+  <div class="container">
+    <header>
+      <div class="avatar">👩‍💻</div>
+      <h1>Samaara's Claude Stats</h1>
+      <p class="subtitle">Coding with AI • Built by <a href="#">Bo 🦊</a></p>
+    </header>
+    
+    <div class="stats-grid" id="stats-grid">
+      <div class="loading"><div class="spinner"></div> Loading...</div>
+    </div>
+    
+    <div class="insight-box" id="insight-box" style="display: none;">
+      <h3>✨ AI Insights</h3>
+      <p id="insight-text"></p>
+    </div>
+    
+    <div class="charts-grid">
+      <div class="card">
+        <h2>📊 Daily Activity</h2>
+        <canvas id="activityChart"></canvas>
+        <div class="fun-fact" id="peak-day"></div>
+      </div>
+      <div class="card">
+        <h2>🕐 Coding Hours</h2>
+        <canvas id="hoursChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="charts-grid">
+      <div class="card">
+        <h2>📁 Projects</h2>
+        <div class="projects-list" id="projects-list">
+          <div class="loading"><div class="spinner"></div> Loading...</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>🤖 Model Usage</h2>
+        <canvas id="modelChart"></canvas>
+        <div id="model-breakdown"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p class="credit">Built with 💜 by <strong>Bo 🦊</strong> — Samaara's AI assistant</p>
+      <p class="credit">Powered by <a href="https://claude.ai" target="_blank">Claude Code</a> + <a href="https://openclaw.ai" target="_blank">OpenClaw</a></p>
+      <p class="timestamp" id="timestamp"></p>
+    </footer>
+  </div>
+  
+  <script>
+    let activityChart, hoursChart, modelChart;
+    
+    async function loadData() {
+      try {
+        const res = await fetch('/data.json');
+        const data = await res.json();
+        
+        renderStats(data);
+        renderProjects(data.projects);
+        renderModels(data.modelUsage);
+        createActivityChart(data.dailyActivity);
+        createHoursChart(data.hourlyDistribution);
+        generateInsight(data);
+        
+        document.getElementById('timestamp').textContent = 
+          `Last updated: ${new Date(data.generatedAt).toLocaleDateString('en-US', { 
+            month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+          })}`;
+        
+      } catch (e) {
+        console.error('Failed to load data:', e);
+        document.getElementById('stats-grid').innerHTML = 
+          '<div class="loading">Failed to load data. Try refreshing!</div>';
+      }
+    }
+    
+    function renderStats(data) {
+      const s = data.summary;
+      const f = data.funStats;
+      
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-icon">💬</div>
+          <div class="stat-value">${s.totalSessions}</div>
+          <div class="stat-label">Sessions</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">📝</div>
+          <div class="stat-value">${formatNumber(s.totalMessages)}</div>
+          <div class="stat-label">Messages</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">📁</div>
+          <div class="stat-value">${s.projectCount}</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value">${s.daysSinceFirstSession}</div>
+          <div class="stat-label">Days with Claude</div>
+        </div>
+        <div class="stat-card pink">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-value">${s.longestSessionHours}h</div>
+          <div class="stat-label">Longest Session</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔧</div>
+          <div class="stat-value">${formatNumber(f.totalToolCalls)}</div>
+          <div class="stat-label">Tool Calls</div>
+        </div>
+      `;
+    }
+    
+    function renderProjects(projects) {
+      const icons = ['🚀', '💡', '🎯', '⚡', '🔮', '🎨', '🧪', '📱'];
+      
+      document.getElementById('projects-list').innerHTML = projects.slice(0, 5).map((p, i) => `
+        <div class="project-item">
+          <div class="project-name">
+            <div class="project-icon">${icons[i % icons.length]}</div>
+            <span>${p.name}</span>
+          </div>
+          <div class="project-stats">
+            <div class="project-stat">
+              <div class="project-stat-value">${p.sessionCount}</div>
+              <div class="project-stat-label">Sessions</div>
+            </div>
+            <div class="project-stat">
+              <div class="project-stat-value">${formatNumber(p.totalMessages)}</div>
+              <div class="project-stat-label">Messages</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function renderModels(modelUsage) {
+      document.getElementById('model-breakdown').innerHTML = Object.entries(modelUsage).map(([name, usage]) => `
+        <div class="model-item">
+          <div class="model-name">
+            <div class="model-dot ${name.toLowerCase().includes('opus') ? 'opus' : 'sonnet'}"></div>
+            <span>${name}</span>
+          </div>
+          <span class="cost-badge">$${usage.estimatedCost}</span>
+        </div>
+      `).join('');
+      
+      createModelChart(modelUsage);
+    }
+    
+    function createActivityChart(dailyData) {
+      const ctx = document.getElementById('activityChart').getContext('2d');
+      if (activityChart) activityChart.destroy();
+      
+      const labels = dailyData.slice(-14).map(d => {
+        const date = new Date(d.date);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      });
+      const messages = dailyData.slice(-14).map(d => d.messageCount);
+      const tools = dailyData.slice(-14).map(d => d.toolCallCount);
+      
+      activityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Messages',
+              data: messages,
+              backgroundColor: 'rgba(99, 102, 241, 0.8)',
+              borderRadius: 6
+            },
+            {
+              label: 'Tools',
+              data: tools,
+              backgroundColor: 'rgba(168, 85, 247, 0.8)',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#8888a0', font: { family: 'Inter' } } } },
+          scales: {
+            x: { grid: { color: '#2a2a3a' }, ticks: { color: '#8888a0' } },
+            y: { grid: { color: '#2a2a3a' }, ticks: { color: '#8888a0' } }
+          }
+        }
+      });
+      
+      // Peak day
+      const peak = dailyData.reduce((max, d) => d.messageCount > (max?.messageCount || 0) ? d : max, null);
+      if (peak) {
+        const peakDate = new Date(peak.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        document.getElementById('peak-day').innerHTML = `
+          <div class="fun-fact-value">${peak.messageCount} messages</div>
+          <div class="fun-fact-label">Peak day: ${peakDate} 🔥</div>
+        `;
+      }
+    }
+    
+    function createHoursChart(hourCounts) {
+      const ctx = document.getElementById('hoursChart').getContext('2d');
+      if (hoursChart) hoursChart.destroy();
+      
+      const hours = Array.from({length: 24}, (_, i) => i);
+      const counts = hours.map(h => hourCounts[h] || 0);
+      const maxCount = Math.max(...counts, 1);
+      
+      hoursChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+          labels: hours.map(h => `${h}:00`),
+          datasets: [{
+            data: counts,
+            backgroundColor: hours.map((h, i) => {
+              const intensity = counts[i] / maxCount;
+              return `hsla(${250 - intensity * 30}, 80%, ${50 + intensity * 20}%, ${0.4 + intensity * 0.5})`;
+            })
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { r: { grid: { color: '#2a2a3a' }, ticks: { display: false } } }
+        }
+      });
+    }
+    
+    function createModelChart(modelUsage) {
+      const ctx = document.getElementById('modelChart').getContext('2d');
+      if (modelChart) modelChart.destroy();
+      
+      const labels = Object.keys(modelUsage);
+      const data = Object.values(modelUsage).map(m => m.outputTokens);
+      
+      modelChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: ['rgba(99, 102, 241, 0.9)', 'rgba(168, 85, 247, 0.9)'],
+            borderWidth: 0,
+            spacing: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: { legend: { position: 'bottom', labels: { color: '#8888a0', padding: 15 } } }
+        }
+      });
+    }
+    
+    function generateInsight(data) {
+      const s = data.summary;
+      const f = data.funStats;
+      
+      const insights = [
+        `With ${f.avgMessagesPerSession} messages per session on average, you're having deep conversations with Claude!`,
+        `${s.daysSinceFirstSession} days of coding with AI — that's dedication! 🚀`,
+        `${f.totalToolCalls.toLocaleString()} tool calls means Claude is really getting things done for you.`,
+        `Your longest session was ${s.longestSessionHours} hours. That's some serious flow state! ⚡`
+      ];
+      
+      document.getElementById('insight-text').textContent = insights[Math.floor(Math.random() * insights.length)];
+      document.getElementById('insight-box').style.display = 'block';
+    }
+    
+    function formatNumber(n) {
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+      return n.toString();
+    }
+    
+    loadData();
+  </script>
+</body>
+</html>

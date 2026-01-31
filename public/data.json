@@ -1,0 +1,149 @@
+{
+  "generatedAt": "2026-01-31T07:19:30.940Z",
+  "summary": {
+    "totalSessions": 28,
+    "totalMessages": 4731,
+    "projectCount": 5,
+    "daysSinceFirstSession": 69,
+    "longestSessionHours": 116
+  },
+  "dailyActivity": [
+    {
+      "date": "2025-11-22",
+      "messageCount": 404,
+      "sessionCount": 1,
+      "toolCallCount": 141
+    },
+    {
+      "date": "2025-11-23",
+      "messageCount": 786,
+      "sessionCount": 1,
+      "toolCallCount": 274
+    },
+    {
+      "date": "2025-12-05",
+      "messageCount": 154,
+      "sessionCount": 3,
+      "toolCallCount": 46
+    },
+    {
+      "date": "2025-12-09",
+      "messageCount": 943,
+      "sessionCount": 8,
+      "toolCallCount": 318
+    },
+    {
+      "date": "2025-12-14",
+      "messageCount": 121,
+      "sessionCount": 1,
+      "toolCallCount": 46
+    },
+    {
+      "date": "2025-12-26",
+      "messageCount": 524,
+      "sessionCount": 2,
+      "toolCallCount": 166
+    },
+    {
+      "date": "2025-12-28",
+      "messageCount": 483,
+      "sessionCount": 2,
+      "toolCallCount": 114
+    },
+    {
+      "date": "2025-12-29",
+      "messageCount": 381,
+      "sessionCount": 3,
+      "toolCallCount": 95
+    },
+    {
+      "date": "2025-12-30",
+      "messageCount": 257,
+      "sessionCount": 2,
+      "toolCallCount": 64
+    },
+    {
+      "date": "2025-12-31",
+      "messageCount": 305,
+      "sessionCount": 3,
+      "toolCallCount": 74
+    },
+    {
+      "date": "2026-01-02",
+      "messageCount": 373,
+      "sessionCount": 2,
+      "toolCallCount": 100
+    }
+  ],
+  "hourlyDistribution": {
+    "11": 4,
+    "13": 1,
+    "14": 3,
+    "15": 2,
+    "16": 2,
+    "17": 4,
+    "18": 1,
+    "19": 2,
+    "20": 2,
+    "21": 2,
+    "22": 4,
+    "23": 1
+  },
+  "modelUsage": {
+    "Claude Sonnet": {
+      "inputTokens": 33179,
+      "outputTokens": 72154,
+      "totalTokens": 105333,
+      "estimatedCost": "10.87"
+    },
+    "Claude Opus": {
+      "inputTokens": 273695,
+      "outputTokens": 588112,
+      "totalTokens": 861807,
+      "estimatedCost": "289.41"
+    }
+  },
+  "projects": [
+    {
+      "name": "Trading-System",
+      "sessionCount": 160,
+      "totalMessages": 5523,
+      "lastActivity": "2026-01-05"
+    },
+    {
+      "name": "app-lite",
+      "sessionCount": 23,
+      "totalMessages": 777,
+      "lastActivity": "2026-01-02"
+    },
+    {
+      "name": "Fruiting-Tree",
+      "sessionCount": 15,
+      "totalMessages": 35,
+      "lastActivity": "2025-12-12"
+    },
+    {
+      "name": "Tradingview-Everywhere",
+      "sessionCount": 4,
+      "totalMessages": 179,
+      "lastActivity": "2025-12-14"
+    },
+    {
+      "name": "Stock-Buddy",
+      "sessionCount": 3,
+      "totalMessages": 18,
+      "lastActivity": "2025-12-09"
+    }
+  ],
+  "funStats": {
+    "avgMessagesPerSession": 169,
+    "avgMessagesPerDay": 430,
+    "peakDay": {
+      "date": "2025-12-09",
+      "messageCount": 943,
+      "sessionCount": 8,
+      "toolCallCount": 318
+    },
+    "totalToolCalls": 1438
+  }
+}
