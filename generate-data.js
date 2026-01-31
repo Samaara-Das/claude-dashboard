@@ -84,9 +84,19 @@ function generateData() {
     };
   });
   
+  // Calculate date range
+  const dates = stats.dailyActivity?.map(d => d.date).sort() || [];
+  const firstDate = dates[0] || null;
+  const lastDate = dates[dates.length - 1] || null;
+  
   // Build output (privacy-safe)
   const output = {
     generatedAt: new Date().toISOString(),
+    dateRange: {
+      from: firstDate,
+      to: lastDate,
+      totalDays: dates.length
+    },
     summary: {
       totalSessions: stats.totalSessions,
       totalMessages: stats.totalMessages,

@@ -1,5 +1,10 @@
 {
-  "generatedAt": "2026-01-31T07:19:30.940Z",
+  "generatedAt": "2026-01-31T08:05:25.963Z",
+  "dateRange": {
+    "from": "2025-11-22",
+    "to": "2026-01-02",
+    "totalDays": 11
+  },
   "summary": {
     "totalSessions": 28,
     "totalMessages": 4731,

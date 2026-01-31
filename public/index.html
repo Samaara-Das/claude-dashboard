@@ -97,6 +97,21 @@
       text-decoration: none;
     }
     
+    .date-range {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    
+    .date-range strong {
+      color: var(--accent);
+    }
+    
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -367,6 +382,7 @@
       <div class="avatar">👩‍💻</div>
       <h1>Samaara's Claude Stats</h1>
       <p class="subtitle">Coding with AI • Built by <a href="#">Bo 🦊</a></p>
+      <div class="date-range" id="date-range"></div>
     </header>
     
     <div class="stats-grid" id="stats-grid">
@@ -430,6 +446,15 @@
           `Last updated: ${new Date(data.generatedAt).toLocaleDateString('en-US', { 
             month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
           })}`;
+        
+        // Render date range
+        if (data.dateRange && data.dateRange.from && data.dateRange.to) {
+          const fromDate = new Date(data.dateRange.from);
+          const toDate = new Date(data.dateRange.to);
+          const formatDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          document.getElementById('date-range').innerHTML = 
+            `📅 <strong>${formatDate(fromDate)}</strong> → <strong>${formatDate(toDate)}</strong> (${data.dateRange.totalDays} active days)`;
+        }
         
       } catch (e) {
         console.error('Failed to load data:', e);
